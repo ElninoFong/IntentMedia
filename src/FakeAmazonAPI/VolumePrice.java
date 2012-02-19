@@ -4,7 +4,9 @@
 package FakeAmazonAPI;
 
 /**
- * @author jeremiesimon
+ * VolumePrice extends Price. This class is describing a price that is defined by it's unit price
+ * and by some promotion. eg: unit price = 3, and the price for 4 items is 10. 
+ * <p>@author jeremiesimon<\p>
  *
  */
 public class VolumePrice extends Price {
@@ -26,32 +28,52 @@ public class VolumePrice extends Price {
 	}
 
 	@Override
-	double totalPrice() {
+	double totalPrice(int quantity) {
+		setQuantity(quantity);
 		double totalPrice =  (quantity / volumePromotion) * volumePrice;
 		totalPrice += (quantity%volumePromotion) * unitPrice;
 		return totalPrice;
 	}
 	
+	/**
+	 * 
+	 */
 	public int getQuantity() {
 		return quantity;
 	}
+	
+	public int getVolumePromotion(){
+		return volumePromotion;
+	}
+	
+	public double getVolumePrice(){
+		return volumePrice;
+	}
 
+	/**
+	 * 
+	 */
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
 
 	public boolean isHasVolumePromotion() {
 		return hasVolumePromotion;
 	}
 
+	/**
+	 * 
+	 * @param hasVolumePromotion
+	 */
 	public void setHasVolumePromotion(boolean hasVolumePromotion) {
 		this.hasVolumePromotion = hasVolumePromotion;
 	}
 
 	@Override	
-	public String viewTotalPrice(){
+	public String viewTotalPrice(int quantity){
 		String out = "";
-		out+="Price: "+totalPrice();
+		out+="Price: "+totalPrice(quantity);
 		return out;
 	}
 

@@ -4,7 +4,8 @@
 package FakeAmazonAPI;
 
 /**
- * @author jeremiesimon
+ * Interface Shop. This assumes that in the future there will/might be several shops. 
+ * <p>@author jeremiesimon<\p>
  *
  */
 public interface Shop {

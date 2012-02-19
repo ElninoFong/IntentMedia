@@ -1,5 +1,9 @@
 package FakeAmazonAPI;
 
+/**
+ * Product class. 
+ * <br>@author jeremiesimon <\br>
+ */
 public class Product {
 
 	private String ID; 
@@ -11,18 +15,36 @@ public class Product {
 		this.price = price; 
 	}
 
+	/**
+	 * @return the ID of the product
+	 */
 	public String getID() {
 		return ID;
 	}
 
+	/**
+	 * Set the ID of the product
+	 * @param iD
+	 */
 	public void setID(String iD) {
 		ID = iD;
 	}
 
-	public Price getPrice() {
-		return price;
+	/**
+	 * @param quantity number of instances of that product
+	 * @return the total price for this product
+	 */
+	public double getTotalPrice(int quantity) {
+		return  price.totalPrice(quantity);
+	}
+	
+	public Price getPrice(){
+		return price; 
 	}
 
+	/**
+	 * @param price
+	 */
 	public void setPrice(Price price) {
 		this.price = price;
 	}
@@ -33,6 +55,7 @@ public class Product {
 		out+= "ID: "+ID+", "+price;
 		return out;
 	}
+	
 	@Override
 	public boolean equals(Object obj){
 		if (this == obj)
@@ -56,8 +79,9 @@ public class Product {
 	}
 	
 	public static void main(String[]args){
-		Product p = new Product ("A", new VolumePrice(20.0, 2, 35.0));
+		Product p = new Product ("A", new RegularPrice(0.1));
 		System.out.println(p);
+		System.out.println(p.getTotalPrice(3));
 	}
 	
 	

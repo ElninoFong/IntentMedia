@@ -4,14 +4,17 @@
 package FakeAmazonAPI;
 
 /**
- * @author jeremiesimon
+ * Extends Price. 
+ * Regular Price is a class for type of product that does not offer promotion 
+ * no matter how much quantity the customer is buying. The price is only defined by the 
+ * unit price. 
+ * 
+ * <p>@author jeremiesimon<\p>
  *
  */
 public class RegularPrice extends Price{
 
 	private int quantity = 0;
-	private double unitPrice;
-	private boolean hasVolumePromotion = false;
 		
 	public RegularPrice(double unitPrice) {
 		super(unitPrice);
@@ -23,10 +26,16 @@ public class RegularPrice extends Price{
 	}
 
 	@Override
-	double totalPrice() {
+	double totalPrice(int quantity) {
+		setQuantity(quantity);
 		return quantity * unitPrice;
 	}
 	
+	public double getUnitPrice(){
+		return unitPrice; 
+	}
+	
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -35,14 +44,6 @@ public class RegularPrice extends Price{
 		this.quantity = quantity;
 	}
 	
-	public boolean isHasVolumePromotion() {
-		return hasVolumePromotion;
-	}
-
-	public void setHasVolumePromotion(boolean hasVolumePromotion) {
-		this.hasVolumePromotion = hasVolumePromotion;
-	}
-
 	@Override
 	public String toString(){
 		String out = "";
@@ -51,11 +52,17 @@ public class RegularPrice extends Price{
 	}
 
 	@Override
-	public String viewTotalPrice(){
+	public String viewTotalPrice(int quantity){
 		String out = "";
-		out+="Price: "+totalPrice();
+		out+="Price: "+totalPrice(quantity);
 		return out;
 	}
 
-	
+	public static void main(String[]args){
+		
+		RegularPrice price = new RegularPrice(0.1);
+		price.getUnitPrice();
+		System.out.println(price.totalPrice(3));		
+	}
+
 }

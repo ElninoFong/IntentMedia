@@ -6,18 +6,18 @@ package FakeAmazonAPI;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 /**
- * @author jeremiesimon
+ * This class is a type of Shop. 
+ * A client can interact it through the terminal. 
+ * <p> @author jeremiesimon <\p>
  */
 
 public class GroceryShop implements Shop{
 
 	HashMap <Product, Integer> products; 
-	private ArrayList <Customer> customers = new ArrayList <Customer> (); 
-	private  Terminal terminal; 
 	private String fileName; 
 	private String name; 
 	
@@ -34,10 +34,18 @@ public class GroceryShop implements Shop{
 			  } 
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
 	@Override
 	public String shopView() {
 		String view = "";
 		for (Product product: products.keySet()){
+			if (products.get(product) == 0){
+				view += product+"\tSOLDOUT\n";
+			}
+			else
 			view+=product+"\n";
 		}
 		return view;
@@ -77,12 +85,41 @@ public class GroceryShop implements Shop{
 				System.out.println("There is not enough quantity in stock for this demand");
 			}
 			return false;
-
 		}
-
-		
 	}
 	
+	/**
+	 * Update the records with the current products and quantity  
+	 */
+	public void checkout(){
+		//write to textfile
+		try {
+			   PrintWriter out = new PrintWriter(fileName);
+			   Price price; 
+			   for (Product product : products.keySet()){
+				   price = product.getPrice();
+				   if (price instanceof RegularPrice){
+					   RegularPrice p = (RegularPrice) price; 
+					   out.println(product.getID()+" "+p.unitPrice+" "+products.get(product));   
+				   }
+				   else{
+					   VolumePrice p = (VolumePrice) price;
+					   out.println(product.getID()+" "+p.unitPrice+" "+p.getVolumePromotion()+" "
+				   +p.getVolumePrice()+" "+products.get(product));  
+				   }
+				   
+			   }
+			   out.close();
+			  } catch (IOException e){
+			   e.printStackTrace();
+			   System.out.println("The file providing the data to the store cannot be found");
+		}
+	}
+	
+	/**
+	 * 
+	 * @throws IOException
+	 */
 	private void parser() throws IOException{
 		 BufferedReader reader = new BufferedReader(new FileReader(fileName));
 		 String line;
@@ -93,7 +130,6 @@ public class GroceryShop implements Shop{
 		    	 String ID = words[0];
 		    	 double unitPrice = Double.valueOf(words[1]);
 		    	 int quantity = Integer.valueOf(words[2]);
-
 		    	 products.put(new Product(ID, new RegularPrice(unitPrice)), quantity);
 
 	    	 }
@@ -114,14 +150,6 @@ public class GroceryShop implements Shop{
 	
 		GroceryShop g = new GroceryShop("grocery");
 		System.out.println(g.shopView());
-		System.out.println(g.productView(new Product("A", new VolumePrice(10, 3, 25))));
-		//System.out.println(g.productView("B"));
-		//System.out.println(g.productView("E"));
-		//g.updateProduct("A", -2);
-		//System.out.println(g.productView("A"));
-
-
-
 
 	}
 
