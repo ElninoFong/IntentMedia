@@ -57,7 +57,7 @@ public class VolumePrice extends Price {
 		this.quantity = quantity;
 	}
 
-
+ 
 	public boolean isHasVolumePromotion() {
 		return hasVolumePromotion;
 	}
